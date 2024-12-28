@@ -17,3 +17,28 @@ app:
     serveRoot: '/upload'
     # 文件大小限制，单位M
     maxSize: 10
+    # 数据库配置
+db:
+  mysql:
+    host: 'localhost'
+    username: 'root'
+    password: '123456'
+    database: 'test'
+    port: 3306
+    charset: 'utf8mb4'
+    #自动加载实体
+    autoLoadEntities: true
+    #重试间隔
+    retryDelay: 5000,
+    #重试次数
+    retryAttempts: 5,
+    #时区
+    timezone: '+08:00'
+    #logger: 'file'
+    #logging: true
+    #multipleStatements: true
+    #dropSchema: false
+    #自动同步 生成环境不建议开启
+    synchronize: false
+    #supportBigNumbers: true
+    #bigNumberStrings: true

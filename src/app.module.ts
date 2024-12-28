@@ -3,7 +3,8 @@ import { TerminusModule } from '@nestjs/terminus';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UserModule } from './user/user.module';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule ,ConfigService} from '@nestjs/config';
+import { TypeOrmModule ,TypeOrmModuleOptions } from '@nestjs/typeorm';
 import configuration from './config/index';
 
 @Module({
@@ -13,6 +14,16 @@ import configuration from './config/index';
       cache: true,
       load: [configuration],
       isGlobal: true,
+    }),
+    TypeOrmModule.forRootAsync({
+      imports:[ConfigModule],
+      inject:[ConfigService],
+      useFactory:(config:ConfigService)=>{
+        return {
+          type: 'mysql',
+          ...config.get('db.mysql'),
+        }  as TypeOrmModuleOptions
+      }
     }),
     TerminusModule
   ],

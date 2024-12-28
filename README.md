@@ -145,3 +145,28 @@ app.use(
     }),
 );
 ```
+## 静态资源目录
+
+
+## TYPEORM MySQL
+```bash
+pnpm i  --save @nestjs/typeorm typeorm mysql2
+```
+> src/config/dev.yml
+```yaml
+db:
+  mysql:
+  host: '127.0.0.1'
+  username: 'root'
+  password: '123456'
+  database: 'test'
+  port: 3306
+  charset: 'utf8mb4'
+  logger: 'file'
+  logging: true
+  multipleStatements: true
+  dropSchema: false
+  synchronize: false
+  supportBigNumbers: true
+  bigNumberStrings: true
+```
