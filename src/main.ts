@@ -1,9 +1,9 @@
-
+import * as path from "node:path";
 import { NestFactory } from "@nestjs/core";
 import { NestExpressApplication } from "@nestjs/platform-express";
 import { ConfigService } from '@nestjs/config';
 import { AppModule } from "./app.module";
-import { VersioningType } from "@nestjs/common";
+import { VersioningType,ValidationPipe } from "@nestjs/common";
 import { mw as requestIpMw } from 'request-ip';
 //限流
 import rateLimit from 'express-rate-limit';
@@ -21,15 +21,17 @@ async function bootstrap() {
   // 设置全局访问api前缀
   const prefix = configService.get<string>('app.prefix');
   app.setGlobalPrefix(prefix);
-
+  // 静态资源虚拟路径
+   app.useStaticAssets(path.join(__dirname, '..','public'),{prefix:'/static'});
   // 设置访问频率
   app.use(
       rateLimit({
         windowMs: 15 * 60 * 1000, // 15分钟
-        max: 1000, // 限制15分钟内最多只能访问1000次
+        limit : 100, // 限制15分钟内最多只能访问1000次
       }),
   );
-
+  // 全局验证
+  app.useGlobalPipes(new ValidationPipe({ transform: true, whitelist: true }));
   //web 安全，防常见漏洞 注意： 开发环境如果开启 nest static module 需要将 crossOriginResourcePolicy 设置为 false 否则 静态资源 跨域不可访问
   app.use(helmet({ crossOriginOpenerPolicy: { policy: 'same-origin-allow-popups' }, crossOriginResourcePolicy: false }));
 

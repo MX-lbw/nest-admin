@@ -118,6 +118,7 @@ pnpm i request-ip @types/request-ip -S
 import { mw as requestIpMw } from 'request-ip';
 app.use(requestIpMw({ attributeName: 'clientIp' }));
 //Controller req.clientIp
+console.log(req.clientIp)
 ```
 
 ## 安全防护
