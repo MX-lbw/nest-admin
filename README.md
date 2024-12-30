@@ -170,3 +170,22 @@ db:
   supportBigNumbers: true
   bigNumberStrings: true
 ```
+> src/app.module.ts
+```ts
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+@Module({
+  imports: [
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => {
+          return {
+              type: 'mysql',
+              ...config.get('db.mysql'),
+          } as TypeOrmModuleOptions
+      }
+    })
+  ]
+})
+```
